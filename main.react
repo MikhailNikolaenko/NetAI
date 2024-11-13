@@ -1,0 +1,37 @@
+import React, { useState } from 'react';
+import ReactFlow, { addEdge, Handle, Position } from 'react-flow-renderer';
+
+const nodeTypes = {
+    custom: (node) => (
+        <div style={{ padding: 10, border: '1px solid black' }}>
+            <Handle type="target" position={Position.Top} />
+            {node.data.label}
+            <Handle type="source" position={Position.Bottom} />
+        </div>
+    ),
+};
+
+function TaskFlow() {
+    const [elements, setElements] = useState([
+        { id: '1', type: 'custom', data: { label: 'Root Task' }, position: { x: 250, y: 5 } }
+    ]);
+
+    const addNode = () => {
+        const newNode = {
+            id: `${elements.length + 1}`,
+            type: 'custom',
+            data: { label: `Task ${elements.length + 1}` },
+            position: { x: Math.random() * 500, y: Math.random() * 500 }
+        };
+        setElements((els) => [...els, newNode]);
+    };
+
+    return (
+        <div style={{ height: '100vh' }}>
+            <ReactFlow elements={elements} nodeTypes={nodeTypes} />
+            <button onClick={addNode}>Add Task</button>
+        </div>
+    );
+}
+
+export default TaskFlow;
